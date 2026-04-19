@@ -1,0 +1,42 @@
+Ta koda implementira zelo preprost heap alokator (upravljalnik dinamičnega pomnilnika) v C++. Uporablja statično polje velikosti 1024 bajtov kot svoj "heap".
+Glavne komponente:
+• Statični pomnilnik: char heap[1024]
+• Struktura Block: hrani metadata za vsak blok (velikost, kazalec na naslednji blok, zastavica isFree)
+• Sproščen seznam (free list) z začetkom v spremenljivki 'head'
+Funkcije:
+
+initHeap()
+Inicializira heap ob prvem zagonu
+Ustvari en velik prost blok
+
+find_block(size)
+Poišče prvi prosti blok, ki je dovolj velik za zahtevo
+
+split_block(block, size)
+Razcepi prost blok na dva dela:
+prvi del postane zaseden in se vrne uporabniku
+drugi del ostane prost
+
+
+alloc_heap(size)
+Glavna funkcija za alokacijo pomnilnika (podobna malloc)
+Če heap še ni inicializiran, ga inicializira
+
+free_block(ptr)
+Označi blok kot prost (podobna free)
+Ne združuje sosednjih prostih blokov
+
+
+Kako deluje:
+
+Ob prvi alokaciji se ustvari en velik prost blok.
+Pri vsaki naslednji alokaciji se poišče primeren blok in se ga razcepi.
+Funkcija free_block samo spremeni zastavico na "prosto".
+
+Slabosti in omejitve:
+
+Ni coalescing (združevanje sosednjih prostih blokov) → fragmentacija
+Fiksna velikost heap-a (1024 bajtov)
+Brez poravnave pomnilnika (alignment)
+Brez preverjanja mej in napak
+free_block ne združuje blokov, zato se pomnilnik lahko hitro razdrobi
